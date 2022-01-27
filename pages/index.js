@@ -155,7 +155,23 @@ export default function PaginaInicial() {
                 borderRadius: "1000px",
               }}
             >
-              {username.length}
+              {username ? (
+                username
+              ) : (
+                <Box
+                  styleSheet={{
+                    color: appConfig.theme.colors.neutrals[200],
+                    backgroundColor: appConfig.theme.colors.neutrals[900],
+                    margin: "50px",
+                    marginLeft: "15px",
+                    padding: "18px 5px",
+                    borderRadius: "10px",
+                    width: { xs: "150%", sm: "90%" },
+                  }}
+                >
+                  Digite um nome com mais de 3 letras
+                </Box>
+              )}
             </Text>
           </Box>
           {/* Photo Area */}
