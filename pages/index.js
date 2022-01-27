@@ -92,12 +92,12 @@ export default function PaginaInicial() {
               onChange={function (event) {
                 console.log("usuario", event.target.value);
                 const valor = event.target.value;
-                function Teste(valor) {
+                function LimitaTamanho(valor) {
                   if (valor.length > 3) {
                     return event.target.value;
                   }
                 }
-                setUsername(Teste(valor));
+                setUsername(LimitaTamanho(valor));
               }}
               value={username}
               textFieldColors={{
