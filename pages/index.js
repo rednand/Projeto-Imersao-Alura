@@ -23,7 +23,7 @@ function Titulo(props) {
 }
 
 export default function PaginaInicial() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("rednand");
   const roteamento = useRouter();
 
   return (
@@ -155,7 +155,7 @@ export default function PaginaInicial() {
                 borderRadius: "1000px",
               }}
             >
-              {username}
+              {username.length}
             </Text>
           </Box>
           {/* Photo Area */}
