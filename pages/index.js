@@ -4,7 +4,6 @@ import { Box, Button, Text, TextField, Image } from "@skynexui/components";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-
 function Titulo(props) {
   console.log(props);
   const Tag = props.tag || "h1";
@@ -93,7 +92,12 @@ export default function PaginaInicial() {
               onChange={function (event) {
                 console.log("usuario", event.target.value);
                 const valor = event.target.value;
-                setUsername(valor);
+                function Teste(valor) {
+                  if (valor.length > 3) {
+                    return event.target.value;
+                  }
+                }
+                setUsername(Teste(valor));
               }}
               value={username}
               textFieldColors={{
