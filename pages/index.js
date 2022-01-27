@@ -2,34 +2,8 @@ import appConfig from "../config.json";
 import {} from "@skynexui/components";
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
-function GlobalStyle() {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "Open Sans", sans-serif;
-      }
-      html,
-      body,
-      #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-    `}</style>
-  );
-}
 
 function Titulo(props) {
   console.log(props);
@@ -50,10 +24,8 @@ function Titulo(props) {
 }
 
 export default function PaginaInicial() {
-  const [username, setUsername] = useState("rednand");
-  const onChange = (e) => {
-    setUsername(e.target.value);
-  };
+  const [username, setUsername] = useState("");
+  const roteamento = useRouter();
 
   return (
     <>
@@ -92,6 +64,11 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function (infoEvent) {
+              infoEvent.preventDefault();
+              roteamento.push("/chat");
+              console.log("teste");
+            }}
             styleSheet={{
               display: "flex",
               flexDirection: "column",
@@ -112,9 +89,13 @@ export default function PaginaInicial() {
             >
               {appConfig.name}
             </Text>
-
             <TextField
               fullWidth
+              onChange={function (event) {
+                console.log("usuario", event.target.value);
+                const valor = event.target.value;
+                setUsername(valor);
+              }}
               value={username}
               textFieldColors={{
                 neutral: {
@@ -128,7 +109,6 @@ export default function PaginaInicial() {
             <Button
               type="submit"
               label="Entrar"
-              onClick={onChange}
               fullWidth
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
