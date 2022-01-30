@@ -11,18 +11,20 @@ const SUPABASE_ANON_KEY =
 const SUPABASE_URL = "https://onkqswziwhgwnuyebadx.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+function escutaMensagensEmTempoReal(adicionaMensagem) {
+  return supabaseClient
+    .from('mensagens')
+    .on('INSERT', (respostaLive) => {
+      adicionaMensagem(respostaLive.new);
+    })
+    .subscribe();
+}
+
 export default function ChatPage() {
   const roteamento = useRouter();
   const usuarioLogado = roteamento.query.username;
-
   const [mensagem, setMensagem] = useState("");
-  const [listaDeMensagens, setListaDeMensagens] = useState([
-    {
-      id: 1,
-      de: "rednand",
-      texto: ":sticker: https://exame.com/wp-content/uploads/2017/09/giphy.gif",
-    },
-  ]);
+  const [listaDeMensagens, setListaDeMensagens] = useState([]);
 
   useEffect(() => {
     supabaseClient
@@ -30,9 +32,15 @@ export default function ChatPage() {
       .select("*")
       .order("id", { ascending: false })
       .then(({ data }) => {
-        console.log("Dados da consulta:", data);
+        // console.log("Dados da consulta:", data);
         setListaDeMensagens(data);
       });
+
+    escutaMensagensEmTempoReal((novaMensagem) => {
+      setListaDeMensagens((valorAtualdalista) => {
+        return [novaMensagem, ...valorAtualdalista];
+      });
+    });
   }, []);
 
   /*
@@ -56,10 +64,7 @@ export default function ChatPage() {
     supabaseClient
       .from("mensagens")
       .insert([mensagem])
-      .then(({ data }) => {
-        console.log("resposta:", data);
-        setListaDeMensagens([data[0], ...listaDeMensagens]);
-      });
+      .then(({ data }) => {});
     setMensagem("");
   }
 
@@ -145,7 +150,11 @@ export default function ChatPage() {
                 color: appConfig.theme.colors.neutrals[200],
               }}
             />
-            <ButtonSendSticker />
+            <ButtonSendSticker
+              onStickerClick={(sticker) => {
+                handleNovaMensagem(":sticker: " + sticker);
+              }}
+            />
           </Box>
         </Box>
       </Box>
@@ -184,7 +193,7 @@ function MessageList(props) {
     <Box
       tag="ul"
       styleSheet={{
-        overflow: "scroll",
+        overflow: "hidden",
         display: "flex",
         flexDirection: "column-reverse",
         flex: 1,
@@ -235,7 +244,12 @@ function MessageList(props) {
                 {new Date().toLocaleDateString()}
               </Text>
             </Box>
-            {mensagem.texto}
+            {/* {mensagem.texto.startsWith(":sticker:").toString()} */}
+            {mensagem.texto.startsWith(":sticker:") ? (
+              <Image src={mensagem.texto.replace(":sticker:", "")} />
+            ) : (
+              mensagem.texto
+            )}
           </Text>
         );
       })}
