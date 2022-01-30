@@ -1,9 +1,7 @@
 # Aluracord
 Projeto realizado durante Programa de Imersão React da plataforma @Alura. 
 
-
-<img src="https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-27.jpg" alt="exemplo imagem">
-
+![Imagem do index do projeto](https://user-images.githubusercontent.com/63618987/151722100-8afa7c6f-4440-4833-875b-bc68042057a6.png )
 
 ## Para instalar as dependências do projeto
 
